@@ -1,0 +1,55 @@
+body{
+    background:#fff ;
+
+}
+form{
+    min-width: 90%;
+    min-height: 90vh;
+    background: rgba(0, 0, 0, 0.049);
+    box-shadow: none;
+    border: 1px solid rgba(2, 2, 2, 0.508);
+}
+form .heading{
+    box-shadow: none;
+    border: 1px solid rgba(2, 2, 2, 0.508);
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    color: rgb(255, 196, 0);
+    background: rgba(255, 196, 0, 0.199);
+}
+
+form > div{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+form .input{
+    min-width: 200px;
+    border: 1px solid rgb(211, 170, 37);
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+    background: rgba(255, 196, 0, 0.199);
+}
+form .input:last-child{
+    border: none;
+
+}
+form .input:last-child button{
+    color: #fff;
+    background: rgb(211, 170, 37);
+    border:1px solid #fff;
+}
+form .input label{
+    width: 100%;
+    text-transform: uppercase;
+    color: rgb(255, 196, 0);
+    text-shadow: none;
+    text-align: center;
+}
+form .input input,form .input select,form .input button, form .input textarea{
+    min-width: 250px;
+}
