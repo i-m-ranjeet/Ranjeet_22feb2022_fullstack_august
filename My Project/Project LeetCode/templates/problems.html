@@ -70,14 +70,6 @@
             
         </div>
         <table>
-            <tr>
-                <th>S/R</th>
-                <th>Status</th>
-                <th>Title</th>
-                <th>Solution</th>
-                <th>Difficulty</th>
-                <th>Delete</th>
-            </tr>
             {% for problem in problems %} 
             <tr onclick="{window.location.href = 'viewproblem/1'}">
                 <td>{{problem.index}}</td>

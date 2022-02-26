@@ -1,9 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
 import sqlite 
-import json
 
 @api_view(['GET','POST'])
 def add_problem(request):
@@ -43,19 +41,20 @@ def login(request):
         
 @api_view(['GET','POST'])
 def signup(request):
+    print(request.data)
     try:
         request.session['adminid']
-        print(request.session)
     except KeyError:
         if request.data:
             validdata = sqlite.uservalid(request.data['username'])
             if validdata:
                 return render(request,'signup admin.html', {'username':True,'username':request.data['username'], 'fullname':request.data['fullname'], 'mobile':request.data['mobile'],'email':request.data['email']})
-            new = sqlite.addAdmin((request.data['username'], request.data['password'],request.data['mobile'],request.data['email'], "mrranjeet11115@gmail.com",))
+            new = sqlite.addAdmin((request.data['username'], request.data['password'],request.data['fullname'],request.data['mobile'], request.data['email'],))
             if new:
                 return redirect('/login')
             return render(request, 'signup admin.html')
-    return render(request, 'signup admin.html')
+        return render(request, 'signup admin.html')
+    return redirect('/problems')
 
 
 
@@ -85,10 +84,14 @@ def logout(request):
     return render(request, 'login admin.html')
 
 
-
+######   for render the form of add problem
 @api_view(['GET','POST'])
 def addProblem(request):
-    return render(request, 'problem form.html')
+    companies = sqlite.getcompanies()
+    data = []
+    for company in companies:
+        data.append(company[0])
+    return render(request, 'problem form.html',{"company":data})
 
 #######  add a problem 
 @api_view(['GET','POST'])
@@ -98,12 +101,26 @@ def problemform(request):
     except KeyError:
         return redirect('/login')
     else:
-        userid = request.session['adminid']
-        problem = request.data
-        print(problem)
-        datatoadd = (problem['status'],problem['title'],problem['description'],problem['solution'],problem['difficulty'],userid, )
-        sqlite.addproblem(datatoadd)
-        return redirect('/problems')
+        if request.data:
+            userid = request.session['adminid']
+            problem = request.data
+            # print(problem)
+            datatoadd = ( problem['title'], problem['description'], problem['solution'], problem['difficulty'], userid, problem['company'] )
+            sqlite.addproblem(datatoadd)
+            return redirect('/problems')
+        else:
+            companies = sqlite.getcompanies()
+            data = []
+            for company in companies:
+                data.append(company[0])
+            return render(request, 'problem form.html',{"company":data})
+
+
+########    Add new Company
+def setnewcompany(request,newcompany):
+    sqlite.setcompany(newcompany)
+    request.data = {}
+    return redirect('/problemform')
 
 ########     Delete a single problem
 def deleteproblem(request,id):
@@ -126,7 +143,7 @@ def personal(request):
     jsondata = []
     index = 1
     for item in data:
-        jsondata.append({'index':index,'id':item[0],'status':item[1], 'title':item[2],'solution':item[4],'difficulty':item[5],'ownerid':int(item[6]),'adminid':int(request.session['adminid'])})
+        jsondata.append({'index':index,'id':item[0], 'title':item[1],'solution':item[3],'difficulty':item[4],'ownerid':int(item[5]),'adminid':int(request.session['adminid'])})
         index+=1
     
     return render(request, 'problems.html',{'problems':jsondata, 'fullname':request.session['fullname'], 'email':request.session['email'], 'mobile':request.session['mobile'], 'personal':True})
@@ -145,8 +162,9 @@ def problems(request):
     # print(data) 
     jsondata = []
     index = 1
+    print(data)
     for item in data:
-        jsondata.append({'index':index,'id':item[0],'status':item[1], 'title':item[2],'solution':item[4],'difficulty':item[5],'ownerid':int(item[6]),'adminid':int(request.session['adminid'])})
+        jsondata.append({'index':index,'id':item[0], 'title':item[1],'solution':item[3],'difficulty':item[4],'ownerid':int(item[5]),'adminid':int(request.session['adminid'])})
         index+=1
     
     return render(request, 'problems.html',{'problems':jsondata, 'fullname':request.session['fullname'], 'email':request.session['email'], 'mobile':request.session['mobile']})
@@ -158,7 +176,7 @@ def searchproblem(request,search):
     index = 1
 
     for item in data:
-        jsondata.append({'index':index,'id':item[0],'status':item[1], 'title':item[2],'solution':item[4],'difficulty':item[5],'ownerid':int(item[6]),'adminid':int(request.session['adminid'])})
+        jsondata.append({'index':index,'id':item[0], 'title':item[1],'solution':item[3],'difficulty':item[4],'ownerid':int(item[5]),'adminid':int(request.session['adminid'])})
         index+=1
     return render(request, 'problems.html',{'problems':jsondata,'search':True, 'searchvalue':search, 'fullname':request.session['fullname'], 'email':request.session['email'], 'mobile':request.session['mobile']})
 
@@ -171,7 +189,7 @@ def sorting(request,sort):
     tempdata = []
     index = 1
     for item in data:
-        tempdata.append({'index':index,'id':item[0],'status':item[1], 'title':item[2],'solution':item[4],'difficulty':item[5],'ownerid':int(item[6]),'adminid':int(request.session['adminid'])})
+        tempdata.append({'index':index,'id':item[0], 'title':item[1],'solution':item[3],'difficulty':item[4],'ownerid':int(item[5]),'adminid':int(request.session['adminid'])})
         index+=1
 
     jsondata = []

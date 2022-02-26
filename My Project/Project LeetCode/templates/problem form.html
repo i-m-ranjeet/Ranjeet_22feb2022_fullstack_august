@@ -19,8 +19,17 @@
         <div class="heading">New Problem</div>
         <div class="form">
             <div class="input">
-                <label for="status">Problem Status  <span style="color: #fd002e;">*</span></label>
-                <input type="text" required placeholder="Enter Problem Status" name="status" id="status">
+                <label for="company">Company  <span style="color: #fd002e;">*</span></label>
+                <select type="text"  aria-required="true" name="company" id="company">
+                    <option selected style="color: #979797;" value="normal">Normal</option>
+                    {% for name in company %}
+                    <option style="color: #00AF9B;" value="normal">{{name}}</option>
+                    {% endfor %}
+                </select>
+                <div class="addbtn">
+                    <input type="text" id="newcompany" placeholder="Enter New Company" style="min-width: 100px; display: none;">
+                    <span id="addnewcompany">+</span>
+                </div>
             </div>
             <div class="input">
                 <label for="title">Problem Title <span style="color: #fd002e;">*</span></label>
@@ -28,12 +37,12 @@
             </div>
             <div class="input">
                 <label for="description">Problem Description <span style="color: #fd002e;">*</span></label>
-                <textarea name="description" required id="description" placeholder="Enter Problem Description" cols="30" rows="10"></textarea>
+                <textarea name="description" required id="description" placeholder="Enter Problem Description" cols="100" rows="10"></textarea>
                 <!-- <input type="text" placeholder="Enter problem description" name="description" id="description"> -->
             </div>
             <div class="input">
                 <label for="solution">Problem Solution</label>
-                <textarea name="solution" id="solution" placeholder="Enter Problem Solution" cols="30" rows="10"></textarea>
+                <textarea name="solution" id="solution" placeholder="Enter Problem Solution" cols="100" rows="10"></textarea>
                 <!-- <input type="text" placeholder="Enter problem solution" name="solution" id="solution"> -->
             </div>
             <div class="input">
@@ -52,6 +61,19 @@
         </div>
         
     </form>
+    <script>
+        addnewcompany.addEventListener('click',()=>{
+            if (newcompany.style.display == 'none'){
+                newcompany.style.display = 'inline-block'
+            }
+            else if(newcompany.value == ''){
+                newcompany.style.display = 'none'
+            }
+            else{
+                window.location.href = `/newcompany/${newcompany.value}/`
+            }
+        })
+    </script>
 </body>
 
 </html>

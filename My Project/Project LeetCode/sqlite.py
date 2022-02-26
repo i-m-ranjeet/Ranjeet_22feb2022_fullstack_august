@@ -1,15 +1,18 @@
 import sqlite3
 
+from django.db import connections
+
 # conn = sqlite3.connect('admins.db')
 # c = conn.cursor()
 
 # c.execute("""  CREATE TABLE problems (
-#     status VARCHAR(20) NULL,
 #     title VARCHAR(120),
 #     description VARCHAR,
 #     solution VARCHAR,
 #     difficulty VARCHAR,
 #     userid VARCHAR NOT NULL,
+#     company VARCHAR,
+#     FOREIGN KEY(company) REFERENCES company(companyname),
 #     FOREIGN KEY(userid) REFERENCES adminsdata(rowid)
 # )  """)
 
@@ -22,6 +25,34 @@ import sqlite3
 #                 email VARCHAR(50))
 #             """)
 
+
+# c.execute("""
+#     CREATE TABLE users (
+#         username VARCHAR(20) NOT NULL UNIQUE,
+#         password VARCHAR(12) NOT NULL,
+#         first_name VARCHAR,
+#         last_name VARCHAR,
+#         mobile INTEGER,
+#         email VARCHAR
+#     )
+# """)
+
+# c.execute("""CREATE TABLE problemstatus 
+#                 (status VARCHAR NULL ,
+#                 pid INTEGER,
+#                 uid INTEGER,
+#                 FOREIGN KEY(pid) REFERENCES problems(rowid),
+#                 FOREIGN KEY(uid) REFERENCES users(rowid))
+#             """)
+
+# c.execute("""CREATE TABLE company 
+#                 (companyname VARCHAR)
+#             """)
+
+
+
+# conn.commit()
+# conn.close()
 
 
 def uservalid(user):
@@ -36,7 +67,7 @@ def uservalid(user):
         return {'id':validuser[0],'username':validuser[1],'password':validuser[2],'fullname':validuser[3],'email':validuser[4],'mobile':validuser[5]}
 
 def addAdmin(data):
-        
+    print(">>>>",data)
     conn = sqlite3.connect('admins.db')
     c = conn.cursor()
     c.execute(f" INSERT INTO adminsdata VALUES {data} ")
@@ -75,7 +106,7 @@ def dropproblem(id):
 def getoneproblem(id):
     conn = sqlite3.connect('admins.db')
     c = conn.cursor()
-    c.execute(f"""  SELECT rowid,* FROM problems WHERE rowid LIKE {id}  """)
+    c.execute(f"""  SELECT rowid,title,description,solution,difficulty,userid FROM problems WHERE rowid LIKE {id}  """)
     singleproblem = c.fetchone()
     conn.commit()
     conn.close()
@@ -84,7 +115,7 @@ def getoneproblem(id):
 def getproblems():
     conn = sqlite3.connect('admins.db')
     c = conn.cursor()
-    c.execute("""  SELECT rowid,* FROM problems  """)
+    c.execute("""  SELECT rowid,title,description,solution,difficulty,userid FROM problems  """)
     allproblems = c.fetchall()
     conn.commit()
     conn.close()
@@ -93,7 +124,7 @@ def getproblems():
 def getpersonal(adminid):
     conn = sqlite3.connect('admins.db')
     c = conn.cursor()
-    c.execute(f"""  SELECT rowid,* FROM problems WHERE userid LIKE {adminid}  """)
+    c.execute(f"""  SELECT rowid,title,description,solution,difficulty,userid FROM problems WHERE userid LIKE {adminid}  """)
     allproblems = c.fetchall()
     conn.commit()
     conn.close()
@@ -103,7 +134,7 @@ def getpersonal(adminid):
 def search(data):
     conn = sqlite3.connect('admins.db')
     c = conn.cursor()
-    c.execute(f"""  SELECT rowid,* FROM problems Where title LIKE "%{data}%"  """)
+    c.execute(f"""  SELECT rowid,title,description,solution,difficulty,userid FROM problems Where title LIKE "%{data}%"  """)
     allproblems = c.fetchall()
     conn.commit()
     conn.close()
@@ -113,6 +144,23 @@ def getAll():
     conn = sqlite3.connect('admins.db')
     c = conn.cursor()
     c.execute("SELECT * FROM adminsdata")
+    all = c.fetchall()
+    conn.commit()
+    conn.close()
+    return all
+
+
+def setcompany(company):
+    conn = sqlite3.connect('admins.db')
+    c = conn.cursor()
+    c.execute(f"INSERT INTO company VALUES ('{company}') ")
+    conn.commit()
+    conn.close()
+
+def getcompanies():
+    conn = sqlite3.connect('admins.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM company")
     all = c.fetchall()
     conn.commit()
     conn.close()

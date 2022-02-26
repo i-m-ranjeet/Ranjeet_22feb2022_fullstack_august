@@ -13,8 +13,8 @@ urlpatterns = [
     path('',views.login),
     path('signup',views.signup),
     path('logout',views.logout, name='logout'),
-    path('problemform', views.problemform),
+    path('problemform', views.problemform, name='problemform'),
     path('addproblem',views.addProblem),
     path('deleteproblem/<int:id>',views.deleteproblem, name='deleteproblem'),
-
+    path('newcompany/<str:newcompany>/',views.setnewcompany, name='newcompany')
 ]
