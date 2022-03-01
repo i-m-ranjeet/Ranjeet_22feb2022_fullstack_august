@@ -5,6 +5,7 @@ urlpatterns = [
     path('problems',views.problems),
     path('problems/',views.problems),
     path('personal',views.personal, name='personal'),
+    path('problemupdate/<int:id>', views.problemupdate, name='problemupdate'),
     path('viewproblem/<int:id>', views.viewproblem, name='viewproblem'),
     path('problems/sort/<str:sort>',views.sorting),
     path('problems/<str:search>',views.searchproblem),

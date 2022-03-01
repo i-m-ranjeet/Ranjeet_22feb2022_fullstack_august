@@ -106,11 +106,21 @@ def dropproblem(id):
 def getoneproblem(id):
     conn = sqlite3.connect('admins.db')
     c = conn.cursor()
-    c.execute(f"""  SELECT rowid,title,description,solution,difficulty,userid FROM problems WHERE rowid LIKE {id}  """)
+    c.execute(f"""  SELECT rowid,title,description,solution,difficulty,userid,company FROM problems WHERE rowid LIKE {id}  """)
     singleproblem = c.fetchone()
+
     conn.commit()
     conn.close()
     return singleproblem
+
+
+def updateproblem(data,id):
+    conn = sqlite3.connect('admins.db')
+    c = conn.cursor()
+    c.execute(f""" UPDATE problems SET title= '{data[0]}', description= '{data[1]}', solution= '{data[2]}', difficulty='{data[3]}',company= '{data[4]}' WHERE rowid LIKE {id} """)
+    conn.commit()
+    conn.close()
+
 
 def getproblems():
     conn = sqlite3.connect('admins.db')

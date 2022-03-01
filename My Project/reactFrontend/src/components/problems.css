@@ -147,7 +147,7 @@ nav .profiledata span svg{
     /* min-height: 100vh; */
     padding: 50px 0;
     position: relative;
-
+    margin:0 30px;
 }
 .problems table{
     width:100%;
@@ -357,4 +357,59 @@ td img{
 .search .mydata:hover .cate{
     height: auto;
     opacity: 1;
+}
+.sidebar{
+width: 400px;
+height: 100vh;
+position: relative;
+right: 0;
+top: 0;
+background: rgba(0, 0, 0, 0.144);  
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.568); 
+display: flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+}
+.sidebar img{
+    border: 1px solid #888;
+    border-radius: 10px;
+    margin: 10px 0;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.576);
+}
+.sidebar .companies{
+    width: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.549);
+    background: #FFF;
+    border-radius: 10px;
+    border: 1px solid #888;
+    margin: 10px;
+    padding: 10px;
+}
+.sidebar .companies div{
+    width: 100%;
+    /* text-align: center; */
+    color: #666;
+    font-weight: 600;
+    padding:10px 0;
+}
+.sidebar .companies span{
+    padding: 4px 10px;
+    margin: 5px;
+    border-radius: 5px;
+    color: #00AF9B;
+    background: #4f4f4f;
+    transition: .2s;
+    cursor: pointer;
+}
+.sidebar .companies span:hover{
+    background: #969191;
+    color: #FF2D55;
+
 }

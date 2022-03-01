@@ -85,3 +85,7 @@ def problemset(request):
 def getoneproblem(request, id):
     data = usersqlite.getoneproblem(id)
     return JsonResponse(data={"islogin":True,"data":data})
+
+def companies(request):
+    data = usersqlite.getcompanies()
+    return JsonResponse(data={"data":data})

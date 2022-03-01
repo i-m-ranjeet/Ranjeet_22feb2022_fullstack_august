@@ -65,5 +65,18 @@ def getoneproblem(id):
     conn.close()
     data = {}
     for p in problem:
-        data.update({"id":problem[0],"title":problem[1],"description":problem[2],"solution":problem[3],"difficulty":problem[4],"company":problem[5]})
+        data.update({"id":problem[0],"title":problem[1],"description":problem[2],"solution":problem[3],"difficulty":problem[4],"company":problem[6]})
+    return data
+
+def getcompanies():
+    conn = sqlite3.connect('admins.db')
+    c = conn.cursor()
+    c.execute(f" SELECT rowid,* FROM company")
+    company = c.fetchall()
+    conn.commit()
+    conn.close()
+    data = []
+    for c in company:
+        data.append({"id":c[0],"company":c[1]})
+    print(data)
     return data

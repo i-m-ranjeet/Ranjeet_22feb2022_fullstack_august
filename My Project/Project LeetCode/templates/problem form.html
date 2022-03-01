@@ -15,47 +15,150 @@
 </head>
 
 <body>
-    <form action="/problemform" method="post">
-        <div class="heading">New Problem</div>
+    <form {% if view %} action="/problemupdate/{{id}}" {% else %} action="/problemform" {% endif %}  method="post">
+        <div class="heading">New Problem 
+            {% if view %}
+            {% if adminid == ownerid %}
+            <span id="startedit">Edit</span>
+            {% else %}
+            <span style="border:1px solid red; color:red;">Unauthorised View</span> 
+            {% endif %} {{adminid}} {{ownerid}}
+            <script>
+                startedit.addEventListener('click',(e)=>{
+                    switch(e.target.innerHTML){
+                        case "Cancel Edit":{
+                            e.target.innerHTML = "Edit"
+                            e.target.style.color = "rgb(211, 170, 37)"
+                            e.target.style.borderColor = "rgb(211, 170, 37)"
+                            processed.style.display = "none"
+                            company.setAttribute("disabled", "")
+                            title.setAttribute("disabled", "")
+                            description.setAttribute("disabled", "")
+                            solution.setAttribute("disabled", "")
+                            difficulty.setAttribute("disabled", "")
+                            addnewbtn.style.display = "none"
+                            break
+                        }
+                        case "Edit":{
+                            e.target.innerHTML = "Cancel Edit"
+                            e.target.style.color = "#fd002e"
+                            e.target.style.borderColor = "#fd002e"
+                            processed.style.display = "block"
+                            company.removeAttribute("disabled")
+                            title.removeAttribute("disabled")
+                            description.removeAttribute("disabled")
+                            solution.removeAttribute("disabled")
+                            difficulty.removeAttribute("disabled")
+                            addnewbtn.style.display = "flex"
+                        }
+                    }
+                })
+            </script>
+            {% endif %}
+        </div>
         <div class="form">
             <div class="input">
                 <label for="company">Company  <span style="color: #fd002e;">*</span></label>
-                <select type="text"  aria-required="true" name="company" id="company">
-                    <option selected style="color: #979797;" value="normal">Normal</option>
+                <select 
+                {% if view %}
+                disabled
+                {% endif %}
+                type="text"  aria-required="true" name="company" id="company">
+                    <option 
+                       {% if not view %}
+                        selected 
+                        {% endif %}
+                        style="color: #979797;" value="normal">Normal</option>
                     {% for name in company %}
-                    <option style="color: #00AF9B;" value="normal">{{name}}</option>
+                    <option 
+                    {% if view %}
+                    {% if name == com %}
+                    selected
+                    {% endif %}
+                    {% endif %}
+                    style="color: #00AF9B;" value="normal">{{name}}</option>
                     {% endfor %}
                 </select>
-                <div class="addbtn">
+                <div class="addbtn" id="addnewbtn" {% if view  %} style="display:none" {% endif %}>
                     <input type="text" id="newcompany" placeholder="Enter New Company" style="min-width: 100px; display: none;">
-                    <span id="addnewcompany">+</span>
+                    
+                    <span id="addnewcompany" >+</span>
+                    
                 </div>
             </div>
             <div class="input">
                 <label for="title">Problem Title <span style="color: #fd002e;">*</span></label>
-                <input type="text" required placeholder="Enter Problem Title" name="title" id="title">
+                <input 
+                {% if view %}
+                disabled
+                {% endif %}
+                {% if title %}
+                value="{{title}}"
+                {% endif %}
+                type="text" required placeholder="Enter Problem Title" name="title" id="title">
+                 
             </div>
             <div class="input">
                 <label for="description">Problem Description <span style="color: #fd002e;">*</span></label>
-                <textarea name="description" required id="description" placeholder="Enter Problem Description" cols="100" rows="10"></textarea>
+                <textarea  
+                {% if view %}
+                disabled
+                {% endif %}
+                 name="description"   required id="description" placeholder="Enter Problem Description" cols="100" rows="10">
+                 {% if description %}
+                 {{description}}
+                 {% endif %}
+                </textarea>
                 <!-- <input type="text" placeholder="Enter problem description" name="description" id="description"> -->
             </div>
             <div class="input">
                 <label for="solution">Problem Solution</label>
-                <textarea name="solution" id="solution" placeholder="Enter Problem Solution" cols="100" rows="10"></textarea>
+                <textarea 
+                {% if view %}
+                disabled 
+                {% endif %} 
+                 name="solution" id="solution" placeholder="Enter Problem Solution" cols="100" rows="10">
+                 {% if solution %}
+                 {{solution}}
+                 {% endif %}
+                </textarea>
                 <!-- <input type="text" placeholder="Enter problem solution" name="solution" id="solution"> -->
             </div>
             <div class="input">
                 <label for="difficulty">Problem Difficulty</label>
-                <select name="difficulty" aria-required="true"  id="difficulty">
-                    <option selected style="color: #00AF9B;" value="easy">Easy</option>
-                    <option style="color: #FFB800;" value="medium">Medium</option>
-                    <option style="color: #FF2D55;" value="hard">Hard</option>
+                <select 
+                {% if view %}
+                disabled
+                {% endif %}
+                 name="difficulty" aria-required="true"  id="difficulty">
+                    <option 
+                    {% if not view %}
+                    selected
+                    {% endif %}
+                    {% if difficulty == "easy" %}
+                    selected
+                    {% endif %}
+                     style="color: #00AF9B;" value="easy">Easy</option>
+                    <option 
+                    {% if difficulty == "medium" %}
+                    selected
+                    {% endif %}
+                     style="color: #FFB800;" value="medium">Medium</option>
+                    <option
+                    {% if difficulty == "hard" %}
+                    selected
+                    {% endif %}
+                     style="color: #FF2D55;" value="hard">Hard</option>
                 </select>
             </div>
-            <div class="input">
-                <!-- <div class="anyac"><a href="/signup">I don't have account</a></div> -->
-                <button>Save This Problem</button>
+            <div class="input" id="processed" {% if view %} style="display: none;"" {% endif %}  >
+                <button>
+                    {% if view %}
+                    update
+                    {% else %}
+                    Save
+                    {% endif %}
+                     This Problem</button>
             </div>
             
         </div>

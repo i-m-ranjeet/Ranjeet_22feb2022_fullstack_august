@@ -70,10 +70,16 @@
             
         </div>
         <table>
+		<tr>
+			<th>S/R</th>
+			<th>Title</th>
+			<th>Solution</th>
+			<th>Difficulty</th>
+			<th>Delete</th>
+		</tr>
             {% for problem in problems %} 
-            <tr onclick="{window.location.href = 'viewproblem/1'}">
+            <tr onclick="{window.location.href = `/viewproblem/{{problem.id}}`}">
                 <td>{{problem.index}}</td>
-                <td>{{problem.status}}</td>
                 <td>{{problem.title}}</td>
                 {% if problem.solution %}
                 <td style="color: #00AF9B;">available</td>

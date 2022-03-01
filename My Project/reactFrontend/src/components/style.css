@@ -151,3 +151,41 @@ form button:active{
     background: #ddd;
     right: 0;
 }
+.probleminfo{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    text-align: center;
+    border:2px solid #fff;
+    background: #999;
+    position: relative;
+    color: #fff;
+}
+.probleminfo div{
+    padding:10px;
+    width: 45%;
+    cursor:pointer;
+    border-radius: 10px;
+    font-weight: 900;
+}
+
+.probleminfo div:hover{
+    background: rgb(182, 182, 182);
+
+}
+.probleminfo div:active{
+    background: #999;
+
+}
+
+.probleminfo div.active{
+    border: 2px solid #fff;
+    background: #aaa;
+    color: #111;
+}
+.view{
+    padding: 10px;
+    line-height: 30px;
+}
